@@ -1,17 +1,22 @@
 package com.dsl.sort.quick;
 
 
+import java.util.Arrays;
+import java.util.Random;
+
 /**
  * 内排序算法
  * 不稳定的排序算法
  * 分治策略
  */
 public class QuickSort {
+    private static Random rand = new Random();
     public static void main(String[] args) {
         int[] nums = new int[]{3, 2, 0, 5, 9, 1, 6};
 //        sort(nums, 0, nums.length - 1);
-        quickSort(nums);
-        print(nums);
+//        quickSort(nums);
+        int[] nums2 = kClosest(nums, nums.length-2);
+        print(nums2);
     }
 
     public static void sort(int[] nums, int left, int right) {
@@ -99,5 +104,32 @@ public class QuickSort {
 
         int[] res = {less + 1,more};
         return res;
+    }
+
+
+    public static int[] kClosest(int[]nums, int K) {
+        int n = nums.length;
+        random_select(nums, 0, n - 1, K);
+        return Arrays.copyOfRange(nums, 0, K);
+    }
+    public static void random_select(int[] nums, int left, int right, int K) {
+        int pivotId = left + rand.nextInt(right - left + 1);
+        int pivot = nums[pivotId];
+        swap(nums, right, pivotId);
+        int i = left - 1;
+        for (int j = left; j < right; ++j) {
+            if (nums[j] <= pivot) {
+                ++i;
+                swap(nums, i, j);
+            }
+        }
+        ++i;
+        swap(nums, i, right);
+        // [left, i-1] 都小于等于 pivot, [i+1, right] 都大于 pivot
+        if (K < i - left + 1) {
+            random_select(nums, left, i - 1, K);
+        } else if (K > i - left + 1) {
+            random_select(nums, i + 1, right, K - (i - left + 1));
+        }
     }
 }

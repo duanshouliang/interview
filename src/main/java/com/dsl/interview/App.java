@@ -6,7 +6,7 @@ package com.dsl.interview;
  */
 public class App 
 {
-    public static void main( String[] args )
+    public static void main( StringDemo[] args )
     {
         System.out.println( "Hello World!" );
     }
